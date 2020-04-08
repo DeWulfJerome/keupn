@@ -26,7 +26,7 @@ SECRET_KEY = 'ifoqp)xr_@bp61yh@0xvb9&4&9lwx6ur4g7)-*^9^592vc91m6'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -38,7 +38,19 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'restEndpoints'
+
+    # third party package for user registration and authentication endpoints
+    'djoser',
+
+    # rets API implementation library
+    'rest_framework',
+
+    # JWT authentication backend library
+    'rest_framework_simplejwt',
+
+    #apps
+    'accounts',
+    'restEndpoints',
 ]
 
 MIDDLEWARE = [
@@ -83,6 +95,28 @@ DATABASES = {
     }
 }
 
+# Rest Framework Configuration
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ),
+    'DEFAULT_PERMISSIONS_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated',
+    )
+}
+
+# What is our custom User model
+AUTH_USER_MODEL = 'accounts.User'
+
+# Djoser configuration
+DJOSER = {
+    'LOGIN_FIELD': 'email',
+    'USER_CREATE_PASSWORD_RETYPE': True,
+    'SERIALIZERS': {
+        'user_create' : 'accounts.serializers.UserCreateSerializer',
+        'user' : 'accounts.serializers.UserCreateSerializer',
+    }
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators

@@ -15,8 +15,19 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import include, path
+from .views import index
 
 urlpatterns = [
+    # restEndpoints app
     path('', include('restEndpoints.urls')),
+
+    # Admin
     path('admin/', admin.site.urls),
+
+    # quick check server
+    path('checkserver/', index, name='index'),
+
+    # authenticate
+    path('auth/', include('accounts.urls')),
+
 ]
